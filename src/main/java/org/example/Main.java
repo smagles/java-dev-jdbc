@@ -1,7 +1,7 @@
 package org.example;
 
 import org.apache.log4j.Logger;
-import org.example.data.Member;
+import org.example.models.Member;
 import org.example.data.OsbbCrud;
 
 import java.io.IOException;
@@ -15,23 +15,24 @@ public class Main {
 
         logger.info("The program has started");
         logger.info("Flyway migration execute");
-        try (OsbbCrud crud = new OsbbCrud()
-                .init()) {
-        for (Member member: crud.getMembersWithAutoNotAllowed()){
-            final StringBuffer sb= new StringBuffer();
-            sb.append(member.getId())
-                    .append(" : ")
-                    .append(member.getName())
-                    .append(" : ")
-                    .append("\r\n");
-            System.out.println(sb);
-        }
-        final Optional <Member> m3 = crud.getMemberById(3);
-        logger.trace(m3.get());
+        OsbbCrud osbb = new OsbbCrud();
+        osbb.fwMigration();
+
+        try (OsbbCrud crud = new OsbbCrud().init()) {
+            for (Member member : crud.getMembersWithAutoNotAllowed()) {
+                System.out.println(member);
+            }
+
+            final Optional<Member> m3 = crud.getMemberById(3);
+            if (m3.isPresent()) {
+                Member member = m3.get();
+                System.out.println(member);
+            }
+            logger.trace(m3.get());
         } catch (IOException e) {
             logger.fatal(e);
         }
-    }
 
+    }
 
 }
