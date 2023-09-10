@@ -15,8 +15,6 @@ public class Main {
 
         logger.info("The program has started");
         logger.info("Flyway migration execute");
-        OsbbCrud osbb = new OsbbCrud();
-        osbb.fwMigration();
 
         try (OsbbCrud crud = new OsbbCrud().init()) {
             for (Member member : crud.getMembersWithAutoNotAllowed()) {

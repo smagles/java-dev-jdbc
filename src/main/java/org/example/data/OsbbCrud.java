@@ -33,6 +33,8 @@ public class OsbbCrud implements Closeable {
     private static final Logger logger = Logger.getLogger(OsbbCrud.class);
 
     public OsbbCrud init() {
+        fwMigration();
+
         logger.info("Crud has initialized");
 
         try {
@@ -44,7 +46,7 @@ public class OsbbCrud implements Closeable {
         return this;
     }
 
-    public void fwMigration() {
+    private void fwMigration() {
         logger.debug("Flyway migration execute");
 
         Flyway.configure()
