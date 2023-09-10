@@ -14,7 +14,6 @@ import java.util.Optional;
 import static org.example.data.Config.*;
 
 public class OsbbCrud implements Closeable {
-
     private String sqlMembersWithAutoNotAllowedQuery =
             "SELECT " +
                     "m.id AS id, " +
@@ -35,6 +34,7 @@ public class OsbbCrud implements Closeable {
 
     public OsbbCrud init() {
         logger.info("Crud has initialized");
+
         try {
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
@@ -46,6 +46,7 @@ public class OsbbCrud implements Closeable {
 
     public void fwMigration() {
         logger.debug("Flyway migration execute");
+
         Flyway.configure()
                 .dataSource(JDBC_URL, USERNAME, PASSWORD)
                 .locations("classpath:flyway/scripts")
@@ -55,7 +56,9 @@ public class OsbbCrud implements Closeable {
 
     public List<Member> getMembersWithAutoNotAllowed() {
         logger.trace("Call getting members with auto not allowed method");
+
         final List<Member> result = new LinkedList<>();
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlMembersWithAutoNotAllowedQuery)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -78,6 +81,7 @@ public class OsbbCrud implements Closeable {
 
     public Optional<Member> getMemberById(final int id) {
         logger.trace("Call getting member by ID method");
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlMembersByIdQuery)) {
             preparedStatement.setInt(1, id);
             final ResultSet resultSet = preparedStatement.executeQuery();
